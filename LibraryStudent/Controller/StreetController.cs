@@ -73,5 +73,11 @@ namespace LibraryStudent.Controller
             }
             CurrentStreet = s;
         }
+
+        public void Delete(int index)
+        {
+            Streets.RemoveAt(index);
+            Save();
+        }
     }
 }

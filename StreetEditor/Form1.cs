@@ -156,5 +156,11 @@ namespace StreetEditor
             streetController.EditMap(txt_street_name.Text, lst_names.SelectedIndex);
             ReloadList();
         }
+
+        private void btn_delete_Click(object sender, EventArgs e)
+        {
+            streetController.Delete(lst_names.SelectedIndex);
+            ReloadList();
+        }
     }
 }
