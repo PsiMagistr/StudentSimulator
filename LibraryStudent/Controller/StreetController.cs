@@ -51,8 +51,9 @@ namespace LibraryStudent.Controller
             return CurrentStreet.Map.Length;
         }
 
-        public void EditMap(int index)
+        public void EditMap(string name, int index)
         {
+            CurrentStreet.Name = name;
             Streets[index] = CurrentStreet;
             Save();
         }

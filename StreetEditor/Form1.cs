@@ -14,9 +14,9 @@ namespace StreetEditor
 {
     public partial class Form1 : Form
     {
-        public StreetController streetController = new StreetController();
-        public bool flag = false;
-        public void DrawMap(Graphics g, int size)
+        private StreetController streetController = new StreetController();
+        private bool flag = false;
+        private void DrawMap(Graphics g, int size)
         {
             var map = streetController.CurrentStreet.Map;
             Color[] colors = new Color[7] {
@@ -36,6 +36,16 @@ namespace StreetEditor
                     g.FillRectangle(new SolidBrush(colors[map[y][x]]), x * size + 1 * (x + 1), y * size + 1 * (y + 1), size, size);
                 }
             }
+        }
+
+        private void setCount()
+        {
+            flag = false;
+            num_cols.Value = streetController.getWidth();
+            num_rows.Value = streetController.getHeight();
+            txt_street_name.Text = streetController.CurrentStreet.Name;
+            flag = true;
+
         }
 
         //
@@ -71,18 +81,13 @@ namespace StreetEditor
         }
 
         private void lst_names_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            
-            flag = false;
+        {          
             if (lst_names.SelectedIndex > -1)
             {
                 streetController.CurrentStreet = streetController.Streets[lst_names.SelectedIndex];
-                num_cols.Value = streetController.getWidth();
-                num_rows.Value = streetController.getHeight();
-                txt_street_name.Text = streetController.CurrentStreet.Name;
+                setCount();
             }
-            scena.Invalidate();
-            flag = true;
+            scena.Invalidate();            
         }
 
         private void scena_Paint(object sender, PaintEventArgs e)
@@ -108,16 +113,19 @@ namespace StreetEditor
            
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        private void ReloadList()
         {
+            lst_names.Items.Clear();
             foreach (var street in streetController.Streets)
             {
                 lst_names.Items.Add(street.Name);
             }
-            num_cols.Value = streetController.getWidth();
-            num_rows.Value = streetController.getHeight();
-            txt_street_name.Text = streetController.CurrentStreet.Name;
-            flag = true;
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            ReloadList();
+            setCount();
         }
 
         private void num_rows_ValueChanged(object sender, EventArgs e)
@@ -132,20 +140,21 @@ namespace StreetEditor
 
         private void btn_new_map_Click(object sender, EventArgs e)
         {
-            flag = false;
-            streetController.SetNewStreet();          
-            num_cols.Value = streetController.getWidth();
+           // flag = false;
+            streetController.SetNewStreet();
+            /*num_cols.Value = streetController.getWidth();
             num_rows.Value = streetController.getHeight();
-            txt_street_name.Text = streetController.CurrentStreet.Name;
+            txt_street_name.Text = streetController.CurrentStreet.Name;*/
+            setCount();
             lst_names.SelectedIndex = -1;
             scena.Invalidate();
-            flag = true;
+           // flag = true;
         }
 
         private void btn_edit_Click(object sender, EventArgs e)
-        {
-            streetController.CurrentStreet.Name = txt_street_name.Text;
-            streetController.EditMap(lst_names.SelectedIndex);
+        {            
+            streetController.EditMap(txt_street_name.Text, lst_names.SelectedIndex);
+            ReloadList();
         }
     }
 }
