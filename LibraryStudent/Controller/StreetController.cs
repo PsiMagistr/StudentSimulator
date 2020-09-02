@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+//using System.Windows.Forms;
 
 namespace LibraryStudent.Controller
 {
@@ -25,9 +26,21 @@ namespace LibraryStudent.Controller
             CurrentStreet = new Street("Безымянный", 24, 45);
         }
 
-        public void Change(int y, int x, int value)
-        {
-            CurrentStreet.Map[y][x] = value;
+        public void SetParticleValues(int x1, int y1, string name, bool passability, bool contactpoint, int color_num)
+        {            
+            if (x1 > -1 && x1 <= 20 * CurrentStreet.Map[0].Length + CurrentStreet.Map[0].Length - 1 && x1 > -1 && y1 > -1 && y1 <= 20 * CurrentStreet.Map.Length + CurrentStreet.Map.Length - 1)
+            {
+                if (String.IsNullOrEmpty(name))
+                {
+                    throw new Exception("Название ячейки!!!! не может быть пустым!");                    
+                }
+                CurrentStreet.Map[y1][x1].Name = name;
+                CurrentStreet.Map[y1][x1].ColorNum = color_num;
+                CurrentStreet.Map[y1][x1].Passability = passability;
+                CurrentStreet.Map[y1][x1].ContactPoint = contactpoint;
+               // Save();
+                //CurrentStreet.Invalidate();
+            }
         }
 
         private void Save()
@@ -35,8 +48,22 @@ namespace LibraryStudent.Controller
             Save(CITY_FILE_NAME, Streets);
         }
         
-        public void Add()
+        public void Add(string name, int columns, int rows)
         {
+            Street temp = new Street(name, columns, rows);
+          //  MessageBox.Show(CurrentStreet.Map.Length.ToString() + " " + temp.Map.Length.ToString());
+
+            for (int y = 0; y < temp.Map.Length; y++)
+            {
+                for (int x = 0; x < temp.Map[0].Length; x++)
+                {
+                    temp.Map[y][x].Name = CurrentStreet.Map[y][x].Name;
+                    temp.Map[y][x].ColorNum = CurrentStreet.Map[y][x].ColorNum;
+                    temp.Map[y][x].Passability = CurrentStreet.Map[y][x].Passability;
+                    temp.Map[y][x].ContactPoint =  CurrentStreet.Map[y][x].ContactPoint;
+                }
+            }
+            CurrentStreet = temp;
             Streets.Add(CurrentStreet);
             Save();
         }
@@ -53,6 +80,10 @@ namespace LibraryStudent.Controller
 
         public void EditMap(string name, int index)
         {
+            if (String.IsNullOrWhiteSpace(name))
+            {
+                throw new ArgumentException("Название улицы не может быть пустым!");
+            }
             CurrentStreet.Name = name;
             Streets[index] = CurrentStreet;
             Save();
@@ -78,6 +109,13 @@ namespace LibraryStudent.Controller
         {
             Streets.RemoveAt(index);
             Save();
+        }
+
+        public void SetParticleNum(int X, int Y, int num)
+        {
+            int x = X / 21;
+            int y = Y / 21;
+            CurrentStreet.Map[y][x].Num = num;
         }
     }
 }

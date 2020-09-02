@@ -39,15 +39,24 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.btn_delete = new System.Windows.Forms.Button();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.info = new System.Windows.Forms.ToolStripStatusLabel();
+            this.lst_commands = new System.Windows.Forms.ListBox();
+            this.txt_name_of_ceil = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.ch_passability = new System.Windows.Forms.CheckBox();
+            this.ch_contact = new System.Windows.Forms.CheckBox();
+            this.btn_chane_value = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.scena)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.num_cols)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.num_rows)).BeginInit();
+            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // lst_names
             // 
             this.lst_names.FormattingEnabled = true;
-            this.lst_names.Location = new System.Drawing.Point(36, 47);
+            this.lst_names.Location = new System.Drawing.Point(45, 86);
             this.lst_names.Name = "lst_names";
             this.lst_names.Size = new System.Drawing.Size(139, 264);
             this.lst_names.TabIndex = 0;
@@ -55,7 +64,7 @@
             // 
             // btn_add
             // 
-            this.btn_add.Location = new System.Drawing.Point(36, 327);
+            this.btn_add.Location = new System.Drawing.Point(45, 366);
             this.btn_add.Name = "btn_add";
             this.btn_add.Size = new System.Drawing.Size(117, 23);
             this.btn_add.TabIndex = 1;
@@ -72,12 +81,16 @@
             // 
             // scena
             // 
+            this.scena.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.scena.Location = new System.Drawing.Point(209, 86);
             this.scena.Name = "scena";
             this.scena.Size = new System.Drawing.Size(946, 507);
             this.scena.TabIndex = 3;
             this.scena.TabStop = false;
             this.scena.Paint += new System.Windows.Forms.PaintEventHandler(this.scena_Paint);
+            this.scena.MouseDown += new System.Windows.Forms.MouseEventHandler(this.scena_MouseDown);
+            this.scena.MouseMove += new System.Windows.Forms.MouseEventHandler(this.scena_MouseMove);
+            this.scena.MouseUp += new System.Windows.Forms.MouseEventHandler(this.scena_MouseUp);
             // 
             // num_cols
             // 
@@ -108,7 +121,7 @@
             // 
             // btn_new_map
             // 
-            this.btn_new_map.Location = new System.Drawing.Point(36, 356);
+            this.btn_new_map.Location = new System.Drawing.Point(45, 395);
             this.btn_new_map.Name = "btn_new_map";
             this.btn_new_map.Size = new System.Drawing.Size(117, 23);
             this.btn_new_map.TabIndex = 6;
@@ -118,7 +131,7 @@
             // 
             // btn_edit
             // 
-            this.btn_edit.Location = new System.Drawing.Point(36, 386);
+            this.btn_edit.Location = new System.Drawing.Point(45, 425);
             this.btn_edit.Name = "btn_edit";
             this.btn_edit.Size = new System.Drawing.Size(117, 23);
             this.btn_edit.TabIndex = 7;
@@ -146,7 +159,7 @@
             // 
             // btn_delete
             // 
-            this.btn_delete.Location = new System.Drawing.Point(36, 416);
+            this.btn_delete.Location = new System.Drawing.Point(45, 455);
             this.btn_delete.Name = "btn_delete";
             this.btn_delete.Size = new System.Drawing.Size(117, 23);
             this.btn_delete.TabIndex = 10;
@@ -154,11 +167,92 @@
             this.btn_delete.UseVisualStyleBackColor = true;
             this.btn_delete.Click += new System.EventHandler(this.btn_delete_Click);
             // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.info});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 618);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(1374, 22);
+            this.statusStrip1.TabIndex = 11;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // info
+            // 
+            this.info.Name = "info";
+            this.info.Size = new System.Drawing.Size(106, 17);
+            this.info.Text = "Строка состояния";
+            // 
+            // lst_commands
+            // 
+            this.lst_commands.FormattingEnabled = true;
+            this.lst_commands.Items.AddRange(new object[] {
+            "Указатель",
+            "Зеленый",
+            "Серый"});
+            this.lst_commands.Location = new System.Drawing.Point(1185, 86);
+            this.lst_commands.Name = "lst_commands";
+            this.lst_commands.Size = new System.Drawing.Size(132, 251);
+            this.lst_commands.TabIndex = 12;
+            // 
+            // txt_name_of_ceil
+            // 
+            this.txt_name_of_ceil.Location = new System.Drawing.Point(686, 25);
+            this.txt_name_of_ceil.Name = "txt_name_of_ceil";
+            this.txt_name_of_ceil.Size = new System.Drawing.Size(156, 20);
+            this.txt_name_of_ceil.TabIndex = 13;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(860, 29);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(95, 13);
+            this.label3.TabIndex = 14;
+            this.label3.Text = "Название ячейки";
+            // 
+            // ch_passability
+            // 
+            this.ch_passability.AutoSize = true;
+            this.ch_passability.Location = new System.Drawing.Point(863, 50);
+            this.ch_passability.Name = "ch_passability";
+            this.ch_passability.Size = new System.Drawing.Size(100, 17);
+            this.ch_passability.TabIndex = 15;
+            this.ch_passability.Text = "Проходимость";
+            this.ch_passability.UseVisualStyleBackColor = true;
+            // 
+            // ch_contact
+            // 
+            this.ch_contact.AutoSize = true;
+            this.ch_contact.Location = new System.Drawing.Point(969, 49);
+            this.ch_contact.Name = "ch_contact";
+            this.ch_contact.Size = new System.Drawing.Size(96, 17);
+            this.ch_contact.TabIndex = 16;
+            this.ch_contact.Text = "Контактность";
+            this.ch_contact.UseVisualStyleBackColor = true;
+            // 
+            // btn_chane_value
+            // 
+            this.btn_chane_value.Location = new System.Drawing.Point(1071, 30);
+            this.btn_chane_value.Name = "btn_chane_value";
+            this.btn_chane_value.Size = new System.Drawing.Size(171, 36);
+            this.btn_chane_value.TabIndex = 17;
+            this.btn_chane_value.Text = "Изменить значения ячейки";
+            this.btn_chane_value.UseVisualStyleBackColor = true;
+            this.btn_chane_value.Click += new System.EventHandler(this.btn_chane_value_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1181, 619);
+            this.ClientSize = new System.Drawing.Size(1374, 640);
+            this.Controls.Add(this.btn_chane_value);
+            this.Controls.Add(this.ch_contact);
+            this.Controls.Add(this.ch_passability);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.txt_name_of_ceil);
+            this.Controls.Add(this.lst_commands);
+            this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.btn_delete);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -176,6 +270,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.scena)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.num_cols)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.num_rows)).EndInit();
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -194,6 +290,14 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button btn_delete;
+        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.ToolStripStatusLabel info;
+        private System.Windows.Forms.ListBox lst_commands;
+        private System.Windows.Forms.TextBox txt_name_of_ceil;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.CheckBox ch_passability;
+        private System.Windows.Forms.CheckBox ch_contact;
+        private System.Windows.Forms.Button btn_chane_value;
     }
 }
 

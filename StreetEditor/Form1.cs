@@ -16,13 +16,18 @@ namespace StreetEditor
     {
         private StreetController streetController = new StreetController();
         private bool flag = false;
+        private bool flag2 = false;
+        private bool draw = false;
+        private int X;
+        private int Y;
         private void DrawMap(Graphics g, int size)
         {
             var map = streetController.CurrentStreet.Map;
-            Color[] colors = new Color[7] {
+            Color[] colors = new Color[8] {
+                Color.LightGreen,               
+                Color.Gray,
                 Color.Orange,
-                Color.LightGray,
-                Color.Gray,                
+                Color.LightGray,                
                 Color.Blue,
                 Color.Red,
                 Color.Fuchsia,
@@ -33,7 +38,7 @@ namespace StreetEditor
                 for (int x = 0; x < map[0].Length; x++)
                 {
 
-                    g.FillRectangle(new SolidBrush(colors[map[y][x]]), x * size + 1 * (x + 1), y * size + 1 * (y + 1), size, size);
+                    g.FillRectangle(new SolidBrush(colors[map[y][x].ColorNum]), x * size + 1 * (x + 1), y * size + 1 * (y + 1), size, size);
                 }
             }
         }
@@ -48,22 +53,20 @@ namespace StreetEditor
 
         }
 
-        //
-      /*  public Bitmap getScena(int width, int height, int size, int index)
+        private void DrawBorder(Graphics f)
         {
-            Bitmap picture = new Bitmap(width, height);
-            int[][] map = streetController.Streets[index].Map;
-            Graphics g = Graphics.FromImage(picture);
-            for (int y = 0; y < map.Length; y++)
+            if (X > -1 && Y <= 20 * streetController.CurrentStreet.Map[0].Length + streetController.CurrentStreet.Map[0].Length - 1 && X > -1 && Y > -1 && Y <= 20 * streetController.CurrentStreet.Map.Length + streetController.CurrentStreet.Map.Length - 1)
             {
-                for (int x = 0; x < map[0].Length; x++)
-                {
 
-                    g.FillRectangle(new SolidBrush(Color.Red), x * size + 1 * (x + 1), y * size + 1 * (y + 1), size, size);
-                }
+                /*int x = x1 / 21;
+                int y = y1 / 21;*/
+                if (flag2)
+                {
+                    f.DrawRectangle(new Pen(Color.Black), X *21, Y *21, 20, 20);
+                }             
+                
             }
-            return picture;           
-        }*/
+        }
 
         public Form1()
         {
@@ -72,18 +75,27 @@ namespace StreetEditor
         }
 
         private void btn_add_Click(object sender, EventArgs e)
-        {           
-            
-            streetController.CurrentStreet = new Street(txt_street_name.Text, (int)num_rows.Value, (int)num_cols.Value);           
-            streetController.Add();
-            lst_names.Items.Add(streetController.Streets.Last().Name);
-            scena.Invalidate();
+        {
+            /// 
+            //streetController.CurrentStreet.Name = txt_street_name.Text;
+            try
+            {
+                streetController.Add(txt_street_name.Text, (int)num_rows.Value, (int)num_cols.Value);
+                lst_names.Items.Add(streetController.Streets.Last().Name);
+                scena.Invalidate();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+           
         }
 
         private void lst_names_SelectedIndexChanged(object sender, EventArgs e)
         {          
             if (lst_names.SelectedIndex > -1)
             {
+                flag2 = false;
                 streetController.CurrentStreet = streetController.Streets[lst_names.SelectedIndex];
                 setCount();
             }
@@ -93,6 +105,7 @@ namespace StreetEditor
         private void scena_Paint(object sender, PaintEventArgs e)
         {
             DrawMap(e.Graphics, 20);
+            DrawBorder(e.Graphics);
         }
 
         private void num_cols_ValueChanged(object sender, EventArgs e)
@@ -124,6 +137,7 @@ namespace StreetEditor
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            lst_commands.SelectedIndex = 0;
             ReloadList();
             setCount();
         }
@@ -140,27 +154,93 @@ namespace StreetEditor
 
         private void btn_new_map_Click(object sender, EventArgs e)
         {
-           // flag = false;
-            streetController.SetNewStreet();
-            /*num_cols.Value = streetController.getWidth();
-            num_rows.Value = streetController.getHeight();
-            txt_street_name.Text = streetController.CurrentStreet.Name;*/
+           
+            streetController.SetNewStreet();            
             setCount();
             lst_names.SelectedIndex = -1;
-            scena.Invalidate();
-           // flag = true;
+            scena.Invalidate();           
         }
 
         private void btn_edit_Click(object sender, EventArgs e)
-        {            
-            streetController.EditMap(txt_street_name.Text, lst_names.SelectedIndex);
-            ReloadList();
+        {
+            try
+            {
+                int index = lst_names.SelectedIndex;
+                streetController.EditMap(txt_street_name.Text, index);
+                ReloadList();
+                lst_names.SelectedIndex = index;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            
         }
 
         private void btn_delete_Click(object sender, EventArgs e)
         {
             streetController.Delete(lst_names.SelectedIndex);
             ReloadList();
+        }
+
+        private void scena_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (draw)
+            {
+                try
+                {
+                    X = e.X / 21;
+                    Y = e.Y / 21;
+                    streetController.SetParticleValues(X, Y, txt_name_of_ceil.Text, ch_passability.Checked, ch_contact.Checked, lst_commands.SelectedIndex - 1);
+                    scena.Invalidate();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                    draw = false;
+
+                }             
+               
+            }
+            
+            //info.Text = streetController.CurrentStreet.Map[0][0].Name;
+        }
+
+        private void scena_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (lst_commands.SelectedIndex > 0)
+            {
+                draw = true;
+                flag2 = false;
+            }
+            else
+            {
+                flag2 = true;
+                X = e.X / 21;
+                Y = e.Y / 21;                
+                txt_name_of_ceil.Text = streetController.CurrentStreet.Map[Y][X].Name;
+                ch_passability.Checked = streetController.CurrentStreet.Map[Y][X].Passability;
+                ch_contact.Checked = streetController.CurrentStreet.Map[Y][X].ContactPoint;
+                scena.Invalidate();
+            }
+        }
+
+        private void scena_MouseUp(object sender, MouseEventArgs e)
+        {
+            draw = false;
+        }
+
+        private void btn_chane_value_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                streetController.SetParticleValues(X, Y, txt_name_of_ceil.Text, ch_passability.Checked, ch_contact.Checked, streetController.CurrentStreet.Map[Y][X].ColorNum);
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            
         }
     }
 }
