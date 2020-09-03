@@ -130,9 +130,10 @@ namespace StreetEditor
         {
             lst_names.Items.Clear();
             foreach (var street in streetController.Streets)
-            {
+            {                
                 lst_names.Items.Add(street.Name);
             }
+            //MessageBox.Show(streetController.Streets[0].Name);
         }
 
         private void Form1_Load(object sender, EventArgs e)

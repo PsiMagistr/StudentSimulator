@@ -30,10 +30,10 @@ namespace LibraryStudent.Controller
         {            
             if (x1 > -1 && x1 <= 20 * CurrentStreet.Map[0].Length + CurrentStreet.Map[0].Length - 1 && x1 > -1 && y1 > -1 && y1 <= 20 * CurrentStreet.Map.Length + CurrentStreet.Map.Length - 1)
             {
-                if (String.IsNullOrEmpty(name))
+               /* if (String.IsNullOrEmpty(name))
                 {
                     throw new Exception("Название ячейки!!!! не может быть пустым!");                    
-                }
+                }*/
                 CurrentStreet.Map[y1][x1].Name = name;
                 CurrentStreet.Map[y1][x1].ColorNum = color_num;
                 CurrentStreet.Map[y1][x1].Passability = passability;
@@ -79,11 +79,7 @@ namespace LibraryStudent.Controller
         }
 
         public void EditMap(string name, int index)
-        {
-            if (String.IsNullOrWhiteSpace(name))
-            {
-                throw new ArgumentException("Название улицы не может быть пустым!");
-            }
+        {           
             CurrentStreet.Name = name;
             Streets[index] = CurrentStreet;
             Save();

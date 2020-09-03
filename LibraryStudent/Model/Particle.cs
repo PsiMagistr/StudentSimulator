@@ -9,22 +9,27 @@ namespace LibraryStudent.Model
     [Serializable]
     public class Particle
     {
-        public string Name { get; set; }
+        private string name;
+        public string Name { get { return name; } set {
+                if (String.IsNullOrWhiteSpace(value))
+                {
+                    throw new ArgumentException("Название ячейки никак не может быть пустым....");
+                }
+                name = value;
+            } }
         public bool Passability { get; set; }
         public int ColorNum { get; set; }
         public bool ContactPoint { get; set; }
-        public int Num { get; set; }
-        public Particle(string name, bool passability, bool contactpoint, int num)
-        {
-            if (String.IsNullOrWhiteSpace(name))
-            {
-                throw new ArgumentException("Название ячейки не может быть пустым...."); 
-            }
+        [NonSerialized]
+        private int num;
+        public int Num { get { return num; } set { num = value; } }
+        public Particle(string name, bool passability, bool contactpoint, int num, int colornum)
+        {            
             Name = name;
             Passability = passability;
             ContactPoint = contactpoint;
             Num = num;
-            ColorNum = 0;
+            ColorNum = colornum;
         }
     }
 }
