@@ -29,17 +29,11 @@ namespace LibraryStudent.Controller
         public void SetParticleValues(int x1, int y1, string name, bool passability, bool contactpoint, int color_num)
         {            
             if (x1 > -1 && x1 <= 20 * CurrentStreet.Map[0].Length + CurrentStreet.Map[0].Length - 1 && x1 > -1 && y1 > -1 && y1 <= 20 * CurrentStreet.Map.Length + CurrentStreet.Map.Length - 1)
-            {
-               /* if (String.IsNullOrEmpty(name))
-                {
-                    throw new Exception("Название ячейки!!!! не может быть пустым!");                    
-                }*/
+            {              
                 CurrentStreet.Map[y1][x1].Name = name;
                 CurrentStreet.Map[y1][x1].ColorNum = color_num;
                 CurrentStreet.Map[y1][x1].Passability = passability;
-                CurrentStreet.Map[y1][x1].ContactPoint = contactpoint;
-               // Save();
-                //CurrentStreet.Invalidate();
+                CurrentStreet.Map[y1][x1].ContactPoint = contactpoint;               
             }
         }
 
